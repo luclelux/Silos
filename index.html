@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte des Silos</title>
+    <link rel="stylesheet" href="style.css">
+
+    
+    <!-- Remplace les 2 lignes compat par ces 3 lignes (version moderne) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import { getDatabase, ref, onValue, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBe4nChIrhbcT2XsXSaVlQxo-qyrnXcJHE",
+    authDomain: "silos-monentreprise.firebaseapp.com",
+    databaseURL: "https://silos-monentreprise-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "silos-monentreprise",
+    storageBucket: "silos-monentreprise.firebasestorage.app",
+    messagingSenderId: "760917493520",
+    appId: "1:760917493520:web:d970312c551e49345a0795"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // LIGNE MAGIQUE QUI SUPPRIME LE WARNING À 100%
+  window.db = db;
+  window.ref = ref;
+  window.onValue = onValue;
+  window.set = set;
+  window.serverTimestamp = serverTimestamp;
+</script>
+</head>
+
+<body>
+    <h1>Carte des Silos</h1>
+
+    <div id="carte-container">
+        <img src="images/plan_silos.png" id="carte" alt="Plan des silos">
+    </div>
+
+    <!-- Modal (il doit exister AVANT que le script tourne) -->
+    <div id="siloModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Modifier le stock</h2>
+                <span class="close">×</span>
+            </div>
+            <div class="modal-body">
+                <h3 id="modal-silo-name">Silo</h3>
+                <label>Marchandise :</label>
+                <input type="text" id="modal-marchandise" placeholder="ex: Blé tendre">
+                <label>Quantité (tonnes) :</label>
+                <input type="number" id="modal-quantite" value="0" min="0">
+                <label>Réservée :</label>
+                <div class="reserve-controls">
+                    <input type="number" id="modal-reservee" value="0" min="0">
+                    <button class="btn-plus" onclick="changeReserve(1)">+</button>
+                    <button class="btn-minus" onclick="changeReserve(-1)">−</button>
+                </div>
+                <div class="dispo-box">
+                    Disponible : <strong id="modal-disponible">0</strong> tonnes
+                </div>
+                <label>Remarque :</label>
+                <textarea id="modal-remarque" rows="3"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-save">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TON SCRIPT UNE SEULE FOIS, TOUT EN BAS, APRÈS LE MODAL -->
+    <script src="script.js"></script>
+</body>
+</html>

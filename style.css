@@ -1,0 +1,214 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #f0f0f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    margin: 20px 0 10px 0;
+    font-size: 1.8em;
+}
+
+#carte-container {
+    position: relative;
+    width: 98vmin;
+    height: 98vmin;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+#carte {
+    max-width: 98vw;
+    max-height: 98vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    border: 3px solid #333;
+    border-radius: 8px;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.3);
+}
+
+/* Boutons silos */
+.silo-btn {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    background: #e74c3c;
+    color: black;
+    border: 2.5px solid white;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 11px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.5);
+    transition: all 0.25s;
+    z-index: 10;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 0 0 3px rgba(255,255,255,0.8);
+}
+
+/* Mobile → plus gros */
+@media (max-width: 768px) {
+    .silo-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 15px;
+        line-height: 44px;
+        border-width: 3px;
+    }
+}
+
+/* Survol et clic */
+.silo-btn:hover,
+.silo-btn:active {
+    background: #c0392b;
+    transform: translate(-50%, -50%) scale(1.4);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+}
+
+/* ==================== MODAL ==================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+    animation: slideUp 0.4s ease-out;
+}
+
+.modal-header {
+    background: #2c3e50;
+    color: white;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 { 
+    margin: 0; 
+    font-size: 1.4em; 
+}
+
+.close {
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.close:hover { 
+    opacity: 1; 
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-body h3 {
+    margin: 0 0 20px 0;
+    text-align: center;
+    color: #2c3e50;
+    font-size: 1.6em;
+}
+
+.modal-body label {
+    display: block;
+    margin: 16px 0 6px 0;
+    font-weight: bold;
+    color: #34495e;
+}
+
+.modal-body input,
+.modal-body textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.reserve-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.reserve-controls input { 
+    flex: 1; 
+}
+
+.btn-plus, .btn-minus {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.btn-plus { background: #3498db; color: white; }
+.btn-minus { background: #e74c3c; color: white; }
+
+.dispo-box {
+    margin: 16px 0;
+    padding: 12px;
+    background: #ebf3fd;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.1em;
+    color: #2c79c9;
+}
+
+.modal-footer {
+    padding: 16px;
+    text-align: right;
+    background: #f8f9fa;
+}
+
+.btn-save {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-save:hover { 
+    background: #219653; 
+}
+
+@keyframes fadeIn { from {opacity:0} to {opacity:1} }
+@keyframes slideUp { from {transform:translateY(50px)} to {transform:translateY(0)} }
