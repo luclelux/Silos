@@ -1,17 +1,24 @@
-// script.js – Version Firebase 10 modulaire – ZÉRO WARNING – 20/11/2025
 document.addEventListener("DOMContentLoaded", function () {
     const container = document.getElementById('carte-container');
     const modal = document.getElementById('siloModal');
     const closeBtn = document.querySelector('.close');
 
-    // Récupération de db et silosRef depuis index.html (version module)
-    const db = window.db;
-    const silosRef = window.silosRef;
+    // ===== INITIALISATION FIREBASE (version compat – zéro warning) =====
+    const firebaseConfig = {
+        apiKey: "AIzaSyBe4nChIrhbcT2XsXSaVlQxo-qyrnXcJHE",
+        authDomain: "silos-monentreprise.firebaseapp.com",
+        databaseURL: "https://silos-monentreprise-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "silos-monentreprise",
+        storageBucket: "silos-monentreprise.firebasestorage.app",
+        messagingSenderId: "760917493520",
+        appId: "1:760917493520:web:d970312c551e49345a0795"
+    };
 
-    // Fonctions Firebase importées via le module dans index.html
-    const { ref, onValue, set, serverTimestamp } = window;
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const silosRef = db.ref("silos");
 
-    // ────── TES 80 SILOS COMPLÈTEMENT DÉFINIS (comme tu les voulais) ──────
+    // ===== TOUS LES 80 SILOS (positions exactes + champs par défaut) =====
     const silosList = [
         { id: "1", left: 50.63, top: 76.32, marchandise: "", quantite: 0, reservee: 0, remarque: "" },
         { id: "2", left: 50.74, top: 73.16, marchandise: "", quantite: 0, reservee: 0, remarque: "" },
@@ -98,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
         { id: "84", left: 34.26, top: 38.33, marchandise: "", quantite: 0, reservee: 0, remarque: "" }
     ];
 
-    // Création des boutons sur la carte
+    // ===== CRÉATION DES BOUTONS =====
     silosList.forEach(silo => {
         const btn = document.createElement('button');
         btn.className = 'silo-btn';
@@ -109,29 +116,34 @@ document.addEventListener("DOMContentLoaded", function () {
         container.appendChild(btn);
     });
 
-    // Ouvrir le modal et charger les données en temps réel
+    // ===== OUVRIR LE MODAL + CHARGER LES DONNÉES =====
     function ouvrirModal(siloId) {
-        const siloRef = ref(db, "silos/" + siloId);
-        onValue(siloRef, (snapshot) => {
+        const siloRef = silosRef.child(siloId);
+
+        // Charge les données en temps réel
+        siloRef.on('value', (snapshot) => {
             const data = snapshot.val() || { marchandise: "", quantite: 0, reservee: 0, remarque: "" };
+
             document.getElementById('modal-silo-name').textContent = `Silo ${siloId}`;
             document.getElementById('modal-marchandise').value = data.marchandise || "";
             document.getElementById('modal-quantite').value = data.quantite || 0;
             document.getElementById('modal-reservee').value = data.reservee || 0;
             document.getElementById('modal-remarque').value = data.remarque || "";
             mettreAJourDisponible();
-        }, { onlyOnce: false });
+        });
 
         modal.style.display = "flex";
         modal.dataset.currentId = siloId;
     }
 
+    // ===== MISE À JOUR DISPONIBLE =====
     function mettreAJourDisponible() {
         const qtt = parseFloat(document.getElementById('modal-quantite').value) || 0;
         const res = parseFloat(document.getElementById('modal-reservee').value) || 0;
         document.getElementById('modal-disponible').textContent = Math.max(0, qtt - res);
     }
 
+    // ===== + / - RÉSERVÉE =====
     window.changeReserve = function(val) {
         const input = document.getElementById('modal-reservee');
         let current = parseFloat(input.value) || 0;
@@ -139,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
         mettreAJourDisponible();
     };
 
-    // Sauvegarder les modifications
+    // ===== SAUVEGARDER =====
     document.querySelector('.btn-save').onclick = function() {
         const id = modal.dataset.currentId;
         const data = {
@@ -147,17 +159,17 @@ document.addEventListener("DOMContentLoaded", function () {
             quantite: parseFloat(document.getElementById('modal-quantite').value) || 0,
             reservee: parseFloat(document.getElementById('modal-reservee').value) || 0,
             remarque: document.getElementById('modal-remarque').value.trim(),
-            updatedAt: serverTimestamp()
+            updatedAt: firebase.database.ServerValue.TIMESTAMP
         };
-        set(ref(db, "silos/" + id), data);
+        silosRef.child(id).set(data);
         modal.style.display = "none";
     };
 
-    // Fermeture du modal
+    // ===== FERMETURE MODAL =====
     closeBtn.onclick = () => modal.style.display = "none";
     window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
 
-    // Mise à jour en direct du disponible
+    // ===== INPUTS LIVE =====
     document.getElementById('modal-quantite').oninput = mettreAJourDisponible;
     document.getElementById('modal-reservee').oninput = mettreAJourDisponible;
 });
