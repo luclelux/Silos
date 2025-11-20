@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const siloRef = ref(db, "silos/" + siloId);
         onValue(siloRef, (snapshot) => {
             const data = snapshot.val() || { marchandise: "", quantite: 0, reservee: 0, remarque: "" };
-            document.getElementById('modal-silo-name').textContent = "Silo " + siloId;
+            document.getElementById('modal-silo-name').textContent = `Silo ${siloId}`;
             document.getElementById('modal-marchandise').value = data.marchandise || "";
             document.getElementById('modal-quantite').value = data.quantite || 0;
             document.getElementById('modal-reservee').value = data.reservee || 0;
