@@ -36,7 +36,7 @@ h1 {
     box-shadow: 0 4px 25px rgba(0,0,0,0.3);
 }
 
-/* Boutons silos */
+/* ==================== BOUTONS SILOS ==================== */
 .silo-btn {
     position: absolute;
     width: 48px;
@@ -45,166 +45,74 @@ h1 {
     color: white;
     border: none;
     border-radius: 50%;
-    font-weight: bold;
+    font-weight: 900;                                   /* gras partout */
     font-size: 11px;
+    text-shadow: 0 0 4px rgba(0,0,0,0.8);               /* contour noir très lisible */
     cursor: pointer;
-    transform: translate(-50%, -50%);   /* centre parfaitement le bouton */
+    transform: translate(-50%, -50%);
     z-index: 10;
     box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
-/* ←←← NOUVELLE PARTIE À AJOUTER POUR MOBILE */
+/* Mobile – tablette */
 @media (max-width: 768px) {
     .silo-btn {
-        width: 20px;      /* plus petit sur téléphone */
+        width: 20px;
         height: 20px;
-        font-size: 9px;   /* texte plus petit aussi */
+        font-size: 6px;
     }
 }
 
+/* Téléphone classique (S23, iPhone 15, Pixel 8, etc.) */
 @media (max-width: 480px) {
     .silo-btn {
-        width: 32px;
-        height: 32px;
-        font-size: 8px;
+        width: 10px;
+        height: 10px;
+        font-size: 3px;
     }
 }
 
-/* Survol et clic */
+/* Très petits téléphones (iPhone SE, vieux Android, etc.) */
+@media (max-width: 380px) {
+    .silo-btn {
+        width: 9px;
+        height: 9px;
+        font-size: 3px;
+    }
+}
+
+/* Survol et clic (un peu plus gros au clic pour rester cliquable) */
 .silo-btn:hover,
 .silo-btn:active {
     background: #c0392b;
-    transform: translate(-50%, -50%) scale(1.4);
+    transform: translate(-50%, -50%) scale(1.3);
     box-shadow: 0 8px 25px rgba(0,0,0,0.6);
 }
 
 /* ==================== MODAL ==================== */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.6);
-    justify-content: center;
-    align-items: center;
-    animation: fadeIn 0.3s;
-}
-
-.modal-content {
-    background: white;
-    border-radius: 16px;
-    width: 90%;
-    max-width: 420px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    overflow: hidden;
-    animation: slideUp 0.4s ease-out;
-}
-
-.modal-header {
-    background: #2c3e50;
-    color: white;
-    padding: 16px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.modal-header h2 { 
-    margin: 0; 
-    font-size: 1.4em; 
-}
-
-.close {
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    opacity: 0.8;
-}
-
-.close:hover { 
-    opacity: 1; 
-}
-
-.modal-body {
-    padding: 20px;
-}
-
-.modal-body h3 {
-    margin: 0 0 20px 0;
-    text-align: center;
-    color: #2c3e50;
-    font-size: 1.6em;
-}
-
-.modal-body label {
-    display: block;
-    margin: 16px 0 6px 0;
-    font-weight: bold;
-    color: #34495e;
-}
-
-.modal-body input,
-.modal-body textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    box-sizing: border-box;
-}
-
-.reserve-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.reserve-controls input { 
-    flex: 1; 
-}
-
-.btn-plus, .btn-minus {
-    width: 40px;
-    height: 40px;
-    border: none;
-    border-radius: 50%;
-    font-size: 20px;
-    cursor: pointer;
-}
-
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); justify-content: center; align-items: center; animation: fadeIn 0.3s; }
+.modal-content { background: white; border-radius: 16px; width: 90%; max-width: 420px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; animation: slideUp 0.4s ease-out; }
+.modal-header { background: #2c3e50; color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
+.modal-header h2 { margin: 0; font-size: 1.4em; }
+.close { font-size: 28px; font-weight: bold; cursor: pointer; opacity: 0.8; }
+.close:hover { opacity: 1; }
+.modal-body { padding: 20px; }
+.modal-body h3 { margin: 0 0 20px 0; text-align: center; color: #2c3e50; font-size: 1.6em; }
+.modal-body label { display: block; margin: 16px 0 6px 0; font-weight: bold; color: #34495e; }
+.modal-body input, .modal-body textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+.reserve-controls { display: flex; align-items: center; gap: 10px; }
+.reserve-controls input { flex: 1; }
+.btn-plus, .btn-minus { width: 40px; height: 40px; border: none; border-radius: 50%; font-size: 20px; cursor: pointer; }
 .btn-plus { background: #3498db; color: white; }
 .btn-minus { background: #e74c3c; color: white; }
-
-.dispo-box {
-    margin: 16px 0;
-    padding: 12px;
-    background: #ebf3fd;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 1.1em;
-    color: #2c79c9;
-}
-
-.modal-footer {
-    padding: 16px;
-    text-align: right;
-    background: #f8f9fa;
-}
-
-.btn-save {
-    background: #27ae60;
-    color: white;
-    border: none;
-    padding: 12px 28px;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.btn-save:hover { 
-    background: #219653; 
-}
+.dispo-box { margin: 16px 0; padding: 12px; background: #ebf3fd; border-radius: 10px; text-align: center; font-size: 1.1em; color: #2c79c9; }
+.modal-footer { padding: 16px; text-align: right; background: #f8f9fa; }
+.btn-save { background: #27ae60; color: white; border: none; padding: 12px 28px; border-radius: 8px; font-size: 16px; cursor: pointer; }
+.btn-save:hover { background: #219653; }
 
 @keyframes fadeIn { from {opacity:0} to {opacity:1} }
 @keyframes slideUp { from {transform:translateY(50px)} to {transform:translateY(0)} }
