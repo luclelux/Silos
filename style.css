@@ -39,8 +39,8 @@ h1 {
 /* ==================== BOUTONS SILOS ==================== */
 .silo-btn {
     position: absolute;
-    width: 48px;
-    height: 48px;
+    width: 32px;
+    height: 32px;
     background: #d00;
     color: white;
     border: none;
