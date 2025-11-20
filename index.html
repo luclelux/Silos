@@ -1,86 +1,55 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carte des Silos</title>
+    <link rel="stylesheet" href="style.css">
 
-    <!-- Force le rechargement complet sur tous les appareils (surtout GSM) -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-
-    <!-- Version du script qui change à chaque mise à jour (change le nombre quand tu déploies) -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    <script src="script.js?v=20251120"></script>
-
-    <style>
-        body, html {
-            margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: Arial, sans-serif; background: #f0f0f0;
-        }
-        #carte-container {
-            position: relative; width: 100vw; height: 100vh; background: url('carte.jpg') no-repeat center center;
-            background-size: cover;
-        }
-        .silo-btn {
-            position: absolute; transform: translate(-50%, -50%);
-            width: 44px; height: 44px; border-radius: 50%; background: #e74c3c; color: white;
-            border: 3px solid white; font-weight: bold; font-size: 11px; cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5); transition: all 0.2s;
-        }
-        .silo-btn:hover { transform: translate(-50%, -50%) scale(1.2); }
-
-        /* Modal */
-        #siloModal {
-            display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.7); align-items: center; justify-content: center;
-        }
-        .modal-content {
-            background: white; padding: 20px; border-radius: 12px; width: 90%; max-width: 400px;
-            position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-        }
-        .close { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; }
-        h2 { margin: 0 0 15px; text-align: center; }
-        label { display: block; margin: 12px 0 5px; font-weight: bold; }
-        input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; }
-        .reserve-btns { display: flex; justify-content: space-between; margin: 15px 0; }
-        .reserve-btns button { padding: 12px 20px; font-size: 20px; width: 48%; }
-        .btn-save { width: 100%; padding: 14px; background: #27ae60; color: white; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; }
-        #modal-disponible { font-size: 24px; font-weight: bold; text-align: center; margin: 15px 0; color: #27ae60; }
-    </style>
+    <!-- Firebase compat – zéro warning, ultra stable -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
 </head>
-<body>
 
-    <div id="carte-container"></div>
+<body>
+    <h1>Carte des Silos</h1>
+
+    <div id="carte-container">
+        <img src="images/plan_silos.png" id="carte" alt="Plan des silos">
+    </div>
 
     <!-- Modal -->
-    <div id="siloModal">
+    <div id="siloModal" class="modal">
         <div class="modal-content">
-            <span class="close">×</span>
-            <h2 id="modal-silo-name">Silo</h2>
-
-            <label>Marchandise</label>
-            <input type="text" id="modal-marchandise" placeholder="ex: Blé, Orge, Maïs...">
-
-            <label>Quantité totale (t)</label>
-            <input type="number" id="modal-quantite" min="0" step="1">
-
-            <label>Réservée (t)</label>
-            <div class="reserve-btns">
-                <button onclick="changeReserve(-50)">-50</button>
-                <button onclick="changeReserve(50)">+50</button>
+            <div class="modal-header">
+                <h2>Modifier le stock</h2>
+                <span class="close">×</span>
             </div>
-            <input type="number" id="modal-reservee" min="0" step="1" value="0">
-
-            <label>Disponible : <span id="modal-disponible">0</span> t</label>
-
-            <label>Remarque</label>
-            <textarea id="modal-remarque" rows="3" placeholder="ex: Réservé pour Dupont le 22/11"></textarea>
-
-            <button class="btn-save">Enregistrer</button>
+            <div class="modal-body">
+                <h3 id="modal-silo-name">Silo</h3>
+                <label>Marchandise :</label>
+                <input type="text" id="modal-marchandise" placeholder="ex: Blé tendre">
+                <label>Quantité (tonnes) :</label>
+                <input type="number" id="modal-quantite" value="0" min="0">
+                <label>Réservée :</label>
+                <div class="reserve-controls">
+                    <input type="number" id="modal-reservee" value="0" min="0">
+                    <button class="btn-plus" onclick="changeReserve(1)">+</button>
+                    <button class="btn-minus" onclick="changeReserve(-1)">−</button>
+                </div>
+                <div class="dispo-box">
+                    Disponible : <strong id="modal-disponible">0</strong> tonnes
+                </div>
+                <label>Remarque :</label>
+                <textarea id="modal-remarque" rows="3"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-save">Enregistrer</button>
+            </div>
         </div>
     </div>
 
+    <!-- Ton script.js à la fin -->
+    <script src="script.js"></script>
 </body>
 </html>
