@@ -39,38 +39,34 @@ h1 {
 /* Boutons silos */
 .silo-btn {
     position: absolute;
-    width: 20px;
-    height: 20px;
-    min-width: 20px;
-    min-height: 20px;
-    background: #e74c3c;
-    color: black;
-    border: 2.5px solid white;
+    width: 48px;
+    height: 48px;
+    background: #d00;
+    color: white;
+    border: none;
     border-radius: 50%;
     font-weight: bold;
     font-size: 11px;
-    line-height: 20px;
-    text-align: center;
     cursor: pointer;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 3px 12px rgba(0,0,0,0.5);
-    transition: all 0.25s;
+    transform: translate(-50%, -50%);   /* centre parfaitement le bouton */
     z-index: 10;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-shadow: 0 0 3px rgba(255,255,255,0.8);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
 
-/* Mobile → plus gros */
+/* ←←← NOUVELLE PARTIE À AJOUTER POUR MOBILE */
 @media (max-width: 768px) {
     .silo-btn {
-        width: 44px;
-        height: 44px;
-        font-size: 15px;
-        line-height: 44px;
-        border-width: 3px;
+        width: 20px;      /* plus petit sur téléphone */
+        height: 20px;
+        font-size: 9px;   /* texte plus petit aussi */
+    }
+}
+
+@media (max-width: 480px) {
+    .silo-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 8px;
     }
 }
 
