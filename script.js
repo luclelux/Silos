@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const modal = document.getElementById('siloModal');
     const closeBtn = document.querySelector('.close');
 
-    // ===== INITIALISATION FIREBASE (version compat – zéro warning) =====
+    // ===== INITIALISATION FIREBASE (compat + databaseURL = zéro warning) =====
     const firebaseConfig = {
         apiKey: "AIzaSyBe4nChIrhbcT2XsXSaVlQxo-qyrnXcJHE",
         authDomain: "silos-monentreprise.firebaseapp.com",
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const db = firebase.database();
     const silosRef = db.ref("silos");
 
-    // ===== TOUS LES 80 SILOS (positions exactes + champs par défaut) =====
+    // ===== TES 80 SILOS EXACTEMENT COMME TU LES AS DONNÉS =====
     const silosList = [
         { id: "1", left: 50.63, top: 76.32, marchandise: "", quantite: 0, reservee: 0, remarque: "" },
         { id: "2", left: 50.74, top: 73.16, marchandise: "", quantite: 0, reservee: 0, remarque: "" },
@@ -116,15 +116,26 @@ document.addEventListener("DOMContentLoaded", function () {
         container.appendChild(btn);
     });
 
-    // ===== OUVRIR LE MODAL + CHARGER LES DONNÉES =====
+    // ===== OUVRIR LE MODAL – AFFICHAGE IMMÉDIAT DU NUMÉRO =====
     function ouvrirModal(siloId) {
         const siloRef = silosRef.child(siloId);
 
-        // Charge les données en temps réel
-        siloRef.on('value', (snapshot) => {
-            const data = snapshot.val() || { marchandise: "", quantite: 0, reservee: 0, remarque: "" };
+        // Le numéro s’affiche TOUT DE SUITE
+        document.getElementById('modal-silo-name').textContent = `Silo ${siloId}`;
 
-            document.getElementById('modal-silo-name').textContent = `Silo ${siloId}`;
+        // Chargement initial
+        siloRef.once('value').then(snapshot => {
+            const data = snapshot.val() || { marchandise: "", quantite: 0, reservee: 0, remarque: "" };
+            document.getElementById('modal-marchandise').value = data.marchandise || "";
+            document.getElementById('modal-quantite').value = data.quantite || 0;
+            document.getElementById('modal-reservee').value = data.reservee || 0;
+            document.getElementById('modal-remarque').value = data.remarque || "";
+            mettreAJourDisponible();
+        });
+
+        // Écoute en temps réel
+        siloRef.on('value', snapshot => {
+            const data = snapshot.val() || { marchandise: "", quantite: 0, reservee: 0, remarque: "" };
             document.getElementById('modal-marchandise').value = data.marchandise || "";
             document.getElementById('modal-quantite').value = data.quantite || 0;
             document.getElementById('modal-reservee').value = data.reservee || 0;
@@ -136,14 +147,13 @@ document.addEventListener("DOMContentLoaded", function () {
         modal.dataset.currentId = siloId;
     }
 
-    // ===== MISE À JOUR DISPONIBLE =====
+    // ===== FONCTIONS RESTANTES =====
     function mettreAJourDisponible() {
         const qtt = parseFloat(document.getElementById('modal-quantite').value) || 0;
         const res = parseFloat(document.getElementById('modal-reservee').value) || 0;
         document.getElementById('modal-disponible').textContent = Math.max(0, qtt - res);
     }
 
-    // ===== + / - RÉSERVÉE =====
     window.changeReserve = function(val) {
         const input = document.getElementById('modal-reservee');
         let current = parseFloat(input.value) || 0;
@@ -151,7 +161,6 @@ document.addEventListener("DOMContentLoaded", function () {
         mettreAJourDisponible();
     };
 
-    // ===== SAUVEGARDER =====
     document.querySelector('.btn-save').onclick = function() {
         const id = modal.dataset.currentId;
         const data = {
@@ -165,11 +174,9 @@ document.addEventListener("DOMContentLoaded", function () {
         modal.style.display = "none";
     };
 
-    // ===== FERMETURE MODAL =====
     closeBtn.onclick = () => modal.style.display = "none";
-    window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+    window.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
 
-    // ===== INPUTS LIVE =====
     document.getElementById('modal-quantite').oninput = mettreAJourDisponible;
     document.getElementById('modal-reservee').oninput = mettreAJourDisponible;
 });
