@@ -6,19 +6,41 @@
     <title>Carte des Silos</title>
     <link rel="stylesheet" href="style.css">
 
-    <!-- Firebase compat – zéro warning, ultra stable -->
+    <!-- Anti-cache -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <!-- Firebase compat -->
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
 </head>
 
 <body>
+    <!-- TITRE -->
     <h1>Carte des Silos</h1>
 
+    <div id="logo-droite">
+        <img src="logo.png" alt="Logo de l'entreprise">
+    </div>
+        
+    </div>
+</div>
+
+    <!-- LISTE À GAUCHE -->
+    <div id="liste-silos">
+        <h2>État des silos</h2>
+        <div id="liste-contenu">
+            <div class="silo-ligne">Chargement des données...</div>
+        </div>
+    </div>
+
+    <!-- LA CARTE -->
     <div id="carte-container">
         <img src="images/plan_silos.png" id="carte" alt="Plan des silos">
     </div>
 
-    <!-- Modal -->
+    <!-- MODAL -->
     <div id="siloModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -27,29 +49,50 @@
             </div>
             <div class="modal-body">
                 <h3 id="modal-silo-name">Silo</h3>
+
                 <label>Marchandise :</label>
-                <input type="text" id="modal-marchandise" placeholder="ex: Blé tendre">
+                <div style="position: relative; display: inline-block; width: 100%;">
+                    <input type="text" id="modal-marchandise" placeholder="Tape ou choisis..." list="liste-materiaux" autocomplete="off"
+                           style="padding-right: 40px !important; width: 100%; box-sizing: border-box;">
+                    <span style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+                                 pointer-events: none; color: #555; font-size: 18px; font-weight: bold;"></span>
+                </div>
+
+                <datalist id="liste-materiaux">
+                    <option value="Grès">
+                    <option value="Porphyre">
+                    <option value="Granit Suédois">
+                    <option value="Basalt">
+                    <option value="Pierre Bleue">
+                    <option value="Kandla">
+                    <option value="Sale / à trier">
+                    <option value="Vide">
+                </datalist>
+
                 <label>Quantité (tonnes) :</label>
                 <input type="number" id="modal-quantite" value="0" min="0">
+
                 <label>Réservée :</label>
                 <div class="reserve-controls">
                     <input type="number" id="modal-reservee" value="0" min="0">
                     <button class="btn-plus" onclick="changeReserve(1)">+</button>
                     <button class="btn-minus" onclick="changeReserve(-1)">−</button>
                 </div>
+
                 <div class="dispo-box">
                     Disponible : <strong id="modal-disponible">0</strong> tonnes
                 </div>
+
                 <label>Remarque :</label>
                 <textarea id="modal-remarque" rows="3"></textarea>
             </div>
+
             <div class="modal-footer">
                 <button class="btn-save">Enregistrer</button>
             </div>
         </div>
     </div>
 
-    <!-- Ton script.js à la fin -->
     <script src="script.js"></script>
 </body>
 </html>
