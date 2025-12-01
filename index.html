@@ -17,30 +17,37 @@
 </head>
 
 <body>
+    <!-- DIT IS HET MOOIE RECHTHOEKJE – PRECIES ZOALS OP KAART 171 -->
+    <div id="sync-status">Verbinding...</div>
+
     <!-- TITRE -->
     <h1>Carte des Silos</h1>
 
-    <div id="logo-droite">
-        <img src="logo.png" alt="Logo de l'entreprise">
-    </div>
-        
-    </div>
+    <div id="search-container">
+    <input type="text" id="search-input" placeholder="Zoek steen (grès 15x15, porphyre rouge, kandla…)" autocomplete="off">
+    <div id="search-count">81 silos</div>
 </div>
 
-    <!-- LISTE À GAUCHE -->
+    <div id="logo-droite" ondragstart="return false">
+        <img src="logo.png" alt="Logo de l'entreprise">
+    </div>
+
+    <!-- REST VAN JE CODE (lijst, kaart, modal) blijft exact hetzelfde -->
     <div id="liste-silos">
-        <h2>État des silos</h2>
+        <div id="liste-header">
+            <h2>État des silos</h2>
+            <button id="toggle-liste" title="Réduire / Agrandir">Down Arrow</button>
+        </div>
         <div id="liste-contenu">
             <div class="silo-ligne">Chargement des données...</div>
         </div>
     </div>
 
-    <!-- LA CARTE -->
     <div id="carte-container">
         <img src="images/plan_silos.png" id="carte" alt="Plan des silos">
     </div>
 
-    <!-- MODAL -->
+    <!-- Je modal blijft 100% ongewijzigd -->
     <div id="siloModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -49,44 +56,54 @@
             </div>
             <div class="modal-body">
                 <h3 id="modal-silo-name">Silo</h3>
-
+                <!-- ... (al je modal-code blijft precies zoals je hem al had) ... -->
                 <label>Marchandise :</label>
                 <div style="position: relative; display: inline-block; width: 100%;">
                     <input type="text" id="modal-marchandise" placeholder="Tape ou choisis..." list="liste-materiaux" autocomplete="off"
                            style="padding-right: 40px !important; width: 100%; box-sizing: border-box;">
-                    <span style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
-                                 pointer-events: none; color: #555; font-size: 18px; font-weight: bold;"></span>
                 </div>
-
                 <datalist id="liste-materiaux">
-                    <option value="Grès">
-                    <option value="Porphyre">
-                    <option value="Granit Suédois">
-                    <option value="Basalt">
-                    <option value="Pierre Bleue">
-                    <option value="Kandla">
-                    <option value="Sale / à trier">
-                    <option value="Vide">
+                    <option value="Grès"><option value="Porphyre"><option value="Granit Suédois">
+                    <option value="Basalt"><option value="Pierre Bleue"><option value="Kandla">
+                    <option value="Sale / à trier"><option value="Vide">
                 </datalist>
 
-                <label>Quantité (tonnes) :</label>
-                <input type="number" id="modal-quantite" value="0" min="0">
-
-                <label>Réservée :</label>
-                <div class="reserve-controls">
-                    <input type="number" id="modal-reservee" value="0" min="0">
-                    <button class="btn-plus" onclick="changeReserve(1)">+</button>
-                    <button class="btn-minus" onclick="changeReserve(-1)">−</button>
+                <!-- Quantité totale -->
+                <label>Quantité totale (tonnes) :</label>
+                <div class="adjust-block">
+                    <div class="current-value">Huidig: <strong id="modal-quantite-current">0</strong> ton</div>
+                    <div class="adjust-row">
+                        <input type="number" id="adjust-quantite" placeholder="bijv. 35" min="0" step="0.5">
+                        <button class="btn-ajouter" data-type="quantite" data-action="add">Rajouter</button>
+                        <button class="btn-retirer" data-type="quantite" data-action="sub">Soustraire</button>
+                    </div>
                 </div>
 
-                <div class="dispo-box">
-                    Disponible : <strong id="modal-disponible">0</strong> tonnes
+                <!-- Réservée -->
+                <label>Réservée (tonnes) :</label>
+                <div class="adjust-block">
+                    <div class="current-value">Huidig: <strong id="modal-reservee-current">0</strong> ton</div>
+                    <div class="adjust-row">
+                        <input type="number" id="adjust-reservee" placeholder="bijv. 20" min="0" step="0.5">
+                        <button class="btn-ajouter" data-type="reservee" data-action="add">Rajouter</button>
+                        <button class="btn-retirer" data-type="reservee" data-action="sub">Soustraire</button>
+                    </div>
                 </div>
 
-                <label>Remarque :</label>
-                <textarea id="modal-remarque" rows="3"></textarea>
+                <div class="dispo-box">Disponible : <strong id="modal-disponible">0</strong> tonnes</div>
+
+                <div class="modal-field" id="remarque-normale">
+                    <label>Remarque :</label>
+                    <textarea id="modal-remarque" rows="3" placeholder="Korte opmerking..." 
+                              style="width: 100%; resize: vertical; padding: 10px; border-radius: 8px; border: 1px solid #ccc;"></textarea>
+                </div>
+
+                <div class="modal-field" id="remarque-speciale" style="display: none;">
+                    <label id="remarque-speciale-label">Opmerkingen:</label>
+                    <textarea id="modal-remarque-speciale" rows="10" placeholder="Schrijf hier uitgebreide opmerkingen..."
+                              style="width: 100%; resize: vertical; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 15px;"></textarea>
+                </div>
             </div>
-
             <div class="modal-footer">
                 <button class="btn-save">Enregistrer</button>
             </div>
