@@ -108,12 +108,15 @@ h1 {
 @media (max-width: 480px) { .silo-btn { width: 24px; height: 24px; font-size: 8px; } }
 .silo-btn:hover { transform: translate(-50%, -50%) scale(1.4); }
 
-/* ====================== LÉGENDE MOBILE ====================== */
-#liste-silos {
+/* ====================== LÉGENDE MOBILE – NU PRECIES ZO BREED ALS DE KAART ====================== */
+#liste-silos,
+#liste-silos.open {
     position: fixed;
-    top: 0; left: 0; right: 0;
-    width: 100%;
-    max-height: 80px;
+    top: 0;
+    left: 50%;
+    width: 98vmin;                    /* ← dit is de enige belangrijke regel */
+    max-width: 1000px;                /* zelfde limiet als de kaart */
+    transform: translateX(-50%);
     background: white;
     border-radius: 0 0 16px 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
@@ -121,7 +124,8 @@ h1 {
     overflow: hidden;
     transition: max-height 0.4s ease;
 }
-#liste-silos.open { max-height: 50vh; }
+#liste-silos { max-height: 80px; }
+#liste-silos.open { max-height: 80vh; }   /* of 50vh als je liever iets kleiner hebt */
 
 #liste-header {
     background: #2c3e50;
@@ -141,7 +145,7 @@ h1 {
     cursor: pointer;
 }
 
-/* PC: legende links vast */
+/* PC: legende links vast (blijft zoals je hem al had) */
 @media (min-width: 901px) {
     #liste-silos {
         position: fixed;
@@ -182,7 +186,7 @@ h1 {
 #liste-contenu {
     padding: 10px 0;
     overflow-y: auto;
-    max-height: calc(50vh - 80px);
+    max-height: calc(80vh - 80px);
 }
 .silo-ligne { 
     padding: 8px 20px; 
