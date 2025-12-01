@@ -78,29 +78,49 @@ h1 {
 @media (max-width: 480px) { .silo-btn { width: 24px; height: 24px; font-size: 8px; } }
 .silo-btn:hover { transform: translate(-50%, -50%) scale(1.4); }
 
-/* ====================== LÉGENDE MOBILE ====================== */
-#liste-silos {
+#liste-silos,
+#liste-silos.open {
     position: fixed;
-    top: 0; left: 0; right: 0;
-    width: 100%;
-    max-height: 80px;
+    top: 0;
+    left: 50%;
+    width: 98vmin;
+    max-width: 1000px;
+    transform: translateX(-50%);
     background: white;
     border-radius: 0 0 16px 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     z-index: 500;
     overflow: hidden;
     transition: max-height 0.4s ease;
+    margin: 0;
+    padding: 0; /* extra voor Android overshoot */
 }
+#liste-silos { max-height: 80px; }
 #liste-silos.open { max-height: 50vh; }
-@media (max-width: 900px) {
+
+/* Specifiek voor Android/Samsung (vermindert overshoot) */
+@media (max-width: 900px) and (-webkit-min-device-pixel-ratio: 2.5) {
     #liste-silos,
     #liste-silos.open {
-        left: 50% !important;
-        right: auto !important;
-        width: 98vmin !important;
-        max-width: 1000px !important;
-        transform: translateX(-50%) !important;
+        width: calc(98vmin - 4px); /* kleine correctie voor S23 DPR */
+        box-sizing: border-box;
+        left: calc(50% + 2px); /* kleine shift voor perfect centering */
     }
+}
+
+/* PC blijft ongewijzigd */
+@media (min-width: 901px) {
+    #liste-silos {
+        position: fixed;
+        left: 12px;
+        top: 75px;
+        width: 290px;
+        max-height: calc(100vh - 95px);
+        border-radius: 14px;
+        transition: none;
+    }
+    #toggle-liste { display: none; }
+    body { padding-top: 0; }
 }
 
 #liste-header {
