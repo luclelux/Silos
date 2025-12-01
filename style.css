@@ -108,24 +108,26 @@ h1 {
 @media (max-width: 480px) { .silo-btn { width: 24px; height: 24px; font-size: 8px; } }
 .silo-btn:hover { transform: translate(-50%, -50%) scale(1.4); }
 
-/* ====================== LÉGENDE MOBILE – NU PRECIES ZO BREED ALS DE KAART ====================== */
+/* ====================== LÉGENDE MOBILE – NU ECHT ZO BREED ALS DE KAART (GEEN SCROLL!) ====================== */
 #liste-silos,
 #liste-silos.open {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    width: 98vmin;                    /* ← dit is de enige belangrijke regel */
-    max-width: 1000px;                /* zelfde limiet als de kaart */
-    transform: translateX(-50%);
+    position: fixed !important;
+    top: 0 !important;
+    left: 50% !important;
+    right: auto !important;
+    width: 98vmin !important;
+    max-width: 1000px !important;
+    transform: translateX(-50%) !important;
     background: white;
     border-radius: 0 0 16px 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     z-index: 500;
     overflow: hidden;
     transition: max-height 0.4s ease;
+    margin: 0 auto;
 }
-#liste-silos { max-height: 80px; }
-#liste-silos.open { max-height: 80vh; }   /* of 50vh als je liever iets kleiner hebt */
+#liste-silos          { max-height: 80px; }
+#liste-silos.open     { max-height: 80vh; }
 
 #liste-header {
     background: #2c3e50;
@@ -145,55 +147,15 @@ h1 {
     cursor: pointer;
 }
 
-/* PC: legende links vast (blijft zoals je hem al had) */
-@media (min-width: 901px) {
-    #liste-silos {
-        position: fixed;
-        left: 12px;
-        top: 75px;
-        width: 290px;
-        max-height: calc(100vh - 95px);
-        border-radius: 14px;
-        transition: none;
+body {
+    overflow-x: hidden !important;   /* dit voorkomt horizontaal scrollen */
+}
+
+@media (max-width: 480px) {
+    #liste-silos,
+    #liste-silos.open {
+        width: 96vmin !important;
     }
-    #toggle-liste { display: none; }
-    body { padding-top: 0; }
-}
-
-/* ====================== LOGO ====================== */
-#logo-droite {
-    position: absolute;
-    right: 3%;
-    top: 2%;
-    width: 12%;
-    height: auto;
-    z-index: 300;
-    pointer-events: auto;
-    background: white;
-    padding: 10px 14px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.18);
-    border: 1px solid #eee;
-    cursor: move;
-}
-#logo-droite img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* ====================== LIJST SILOS ====================== */
-#liste-contenu {
-    padding: 10px 0;
-    overflow-y: auto;
-    max-height: calc(80vh - 80px);
-}
-.silo-ligne { 
-    padding: 8px 20px; 
-    font-size: 14px; 
-    border-bottom: 1px solid #eee; 
-    display: flex; 
-    justify-content: space-between; 
 }
 
 /* ====================== MODAL ====================== */
