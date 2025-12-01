@@ -1,19 +1,4 @@
 /* ====================== GÉNÉRAL ====================== */
-* { box-sizing: border-box; }
-body {
-    margin: 0;
-    padding: 0;
-    background: #f0f0f0;
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 70px;
-    overflow-x: hidden !important; /* voorkomt horizontaal scrollen */
-}
-
-/* ====================== SYNC STATUS ====================== */
 #sync-status {
     position: fixed;
     top: 12px;
@@ -30,6 +15,18 @@ body {
     min-width: 160px;
     text-align: center;
 }
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    padding: 0;
+    background: #f0f0f0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px;
+}
 
 /* ====================== TITRE ====================== */
 h1 {
@@ -39,7 +36,7 @@ h1 {
     width: 100%;
 }
 
-/* ====================== CARTE PERFECT OP MOBIEL ====================== */
+/* ====================== CARTE TOUJOURS CENTRÉE ====================== */
 #carte-container {
     position: relative;
     width: 98vmin;
@@ -58,34 +55,6 @@ h1 {
     border-radius: 8px;
     box-shadow: 0 4px 25px rgba(0,0,0,0.3);
 }
-
-/* ====================== ZOEKBALK (bovenaan midden) ====================== */
-#search-container {
-    position: fixed;
-    top: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 500;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: rgba(255,255,255,0.97);
-    padding: 8px 16px;
-    border-radius: 30px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.18);
-    backdrop-filter: blur(8px);
-}
-#search-input {
-    padding: 11px 18px;
-    font-size: 16px;
-    border: 2px solid #ccc;
-    border-radius: 25px;
-    width: 300px;
-    outline: none;
-    transition: all 0.3s;
-}
-#search-input:focus { border-color: #27ae60; width: 340px; }
-#search-count { font-weight: bold; color: #27ae60; min-width: 90px; text-align: center; }
 
 /* ====================== BOUTONS SILOS ====================== */
 .silo-btn {
@@ -109,24 +78,30 @@ h1 {
 @media (max-width: 480px) { .silo-btn { width: 24px; height: 24px; font-size: 8px; } }
 .silo-btn:hover { transform: translate(-50%, -50%) scale(1.4); }
 
-/* ====================== LÉGENDE MOBILE – EXACT ZOALS EPERONNERIE (WERKT 100%) ====================== */
-#liste-silos,
-#liste-silos.open {
-    position: fixed !important;
-    top: 0 !important;
-    left: 50% !important;
-    width: 98vmin !important;
-    max-width: 1000px !important;
-    transform: translateX(-50%) !important;
-    background: white !important;
-    border-radius: 0 0 16px 16px !important;
+/* ====================== LÉGENDE MOBILE ====================== */
+#liste-silos {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    width: 100%;
+    max-height: 80px;
+    background: white;
+    border-radius: 0 0 16px 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     z-index: 500;
     overflow: hidden;
     transition: max-height 0.4s ease;
 }
-#liste-silos          { max-height: 80px; }
-#liste-silos.open     { max-height: 80vh; }
+#liste-silos.open { max-height: 50vh; }
+@media (max-width: 900px) {
+    #liste-silos,
+    #liste-silos.open {
+        left: 50% !important;
+        right: auto !important;
+        width: 98vmin !important;
+        max-width: 1000px !important;
+        transform: translateX(-50%) !important;
+    }
+}
 
 #liste-header {
     background: #2c3e50;
@@ -146,7 +121,7 @@ h1 {
     cursor: pointer;
 }
 
-/* PC: legende blijft zoals je hem had */
+/* PC : légende à gauche fixe */
 @media (min-width: 901px) {
     #liste-silos {
         position: fixed;
@@ -161,15 +136,54 @@ h1 {
     body { padding-top: 0; }
 }
 
-/* ====================== REST VAN JE CODE (ongewijzigd) ====================== */
-#logo-droite,
-.modal,
-.btn-save,
-.adjust-block,
-.dispo-box,
-/* ... alles wat hieronder stond blijft 100% hetzelfde ... */
-/* (ik laat het hieronder exact zoals jij het had) */
+#logo-droite {
+    position: absolute;
+    right: 3%;
+    top: 2%;
+    width: 12%;
+    height: auto;
+    z-index: 300;
+    pointer-events: auto;
+    background: white;
+    padding: 10px 14px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.18);
+    border: 1px solid #eee;
+    cursor: move;
+}
 
+#logo-droite img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ====================== JOUW ORIGINELE MODAL-FIELD STIJLEN ====================== */
+.modal-field {
+    margin: 14px 0;
+}
+.modal-field label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* ====================== LIJST SILOS ====================== */
+#liste-contenu {
+    padding: 10px 0;
+    overflow-y: auto;
+    max-height: calc(50vh - 80px);
+}
+.silo-ligne { 
+    padding: 8px 20px; 
+    font-size: 14px; 
+    border-bottom: 1px solid #eee; 
+    display: flex; 
+    justify-content: space-between; 
+}
+
+/* ====================== MODAL – BIJGEWERKT VOOR RAJOUTER/SOUSTRAIRE ====================== */
 .modal { 
     display: none; 
     position: fixed; 
@@ -191,13 +205,19 @@ h1 {
     background: #2c3e50; 
     color: white; 
     padding: 16px 20px; 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
     border-radius: 16px 16px 0 0; 
 }
-.close { font-size: 32px; cursor: pointer; font-weight: bold; }
-.modal-body { padding: 20px; }
+.close { 
+    font-size: 32px; 
+    cursor: pointer; 
+    font-weight: bold; 
+}
+.modal-body { 
+    padding: 20px; 
+}
 .modal-footer { 
     padding: 16px; 
     text-align: right; 
@@ -217,6 +237,7 @@ h1 {
 }
 .btn-save:hover { background: #219653; }
 
+/* ====================== NIEUWE RAJOUTER / SOUSTRAIRE STYLING ====================== */
 .adjust-block {
     background: #f8f9fa;
     padding: 14px;
@@ -244,16 +265,26 @@ h1 {
     border: 1px solid #999;
     border-radius: 8px;
 }
-.btn-ajouter, .btn-retirer {
-    padding: 12px 18px;
+.btn-ajouter {
+    background: #27ae60;
+    color: white;
     border: none;
+    padding: 12px 18px;
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
     min-width: 100px;
 }
-.btn-ajouter { background: #27ae60; color: white; }
-.btn-retirer { background: #c0392b; color: white; }
+.btn-retirer {
+    background: #c0392b;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    min-width: 100px;
+}
 .btn-ajouter:hover { background: #219653; }
 .btn-retirer:hover { background: #a93226; }
 
@@ -266,4 +297,31 @@ h1 {
     font-weight: bold;
     text-align: center;
     color: #27ae60;
+
+    #search-container {
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.97);
+    padding: 8px 16px;
+    border-radius: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+    backdrop-filter: blur(8px);
+}
+#search-input {
+    padding: 11px 18px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    width: 300px;
+    outline: none;
+    transition: all 0.3s;
+}
+#search-input:focus { border-color: #27ae60; width: 340px; }
+#search-count { font-weight: bold; color: #27ae60; min-width: 90px; text-align: center; }
 }
